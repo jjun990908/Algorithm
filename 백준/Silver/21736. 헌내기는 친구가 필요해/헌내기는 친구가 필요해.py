@@ -1,0 +1,42 @@
+from collections import deque
+
+n, m = map(int, input().split())
+graph = [list(input()) for _ in range(n)]
+visited = [[-1] * m for _ in range(n)]
+answer = 0
+
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
+
+
+def bfs(i, j):
+    global answer
+    queue = deque()
+    queue.append((i, j))
+
+    visited[i][j] = 0
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < m and visited[nx][ny] == -1:
+                if graph[nx][ny] == "X":
+                    visited[nx][ny] = 0
+                else:
+                    if graph[nx][ny] == "P":
+                        answer += 1
+                    visited[nx][ny] = 0
+                    queue.append((nx, ny))
+
+
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == "I" and visited[i][j] == -1:
+            bfs(i, j)
+
+if answer:
+    print(answer)
+else:
+    print("TT")

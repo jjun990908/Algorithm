@@ -1,40 +1,41 @@
-from collections import deque
 import sys
 
 input = sys.stdin.readline
 
-V, E = map(int, input().split())
-graph = [[] for _ in range(V + 1)]
-parents = [i for i in range(V + 1)]
+# N = int(input())
+# M = int(input())
+N, M = map(int, input().split())
 lines = []
+parents = [i for i in range(N + 1)]
 answer = 0
-for _ in range(E):
+
+for _ in range(M):
     a, b, c = map(int, input().split())
     lines.append((a, b, c))
-    graph[a].append((b, c))
-    graph[b].append((a, c))
 lines = sorted(lines, key=lambda x: x[2])
 
 
 def find(x):
     if parents[x] == x:
         return x
-    else:
-        return find(parents[x])
+    parents[x] = find(parents[x])
+    return parents[x]
 
 
 def union(x, y):
-    x = find(x)
-    y = find(y)
-    if x < y:
-        parents[y] = x
-    else:
-        parents[x] = y
+    xx = find(x)
+    yy = find(y)
+    # if xx >= yy:
+    #     parents[x] = yy
+    # else:
+    #     parents[y] = xx
+    parents[xx] = yy
 
 
 for line in lines:
     if find(line[0]) != find(line[1]):
         answer += line[2]
+        # print(line)
         union(line[0], line[1])
 
 print(answer)

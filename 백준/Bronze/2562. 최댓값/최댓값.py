@@ -1,6 +1,8 @@
-list = []
-for i in range(9) :
-    list.append(int(input()))
+import sys
+input = sys.stdin.readline
 
-print(max(list))
-print(list.index(max(list))+1)
+nums = [int(input()) for _ in range(9)]
+
+print(max(nums))
+temp = nums.index(max(nums))
+print(temp+1)
